@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using AssignmentSystem.Services;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 using Debug = AssignmentSystem.Services.AssignmentDebugConsole;
 
@@ -12,58 +13,56 @@ namespace Assignment03
     {
         #region Lecture
 
-       public void LCT01_SyntaxLinkedList()
+        public void LCT01_SyntaxLinkedList()
         {
-            LinkedList<string> linkList = new LinkedList<string>();
-            LinkedList<int> ints = new LinkedList<int>();
+           // 1. สร้าง LinkedList ของประเภท string
+            LinkedList<string> linkedList = new LinkedList<string>();
 
-            ints.AddLast(20);
-            Debug.Log(ints);
-            for (int i = 0; i < 20 ; i++)
-            {
-                ints.AddLast(int.Parse(i.ToString()));
-                Debug.Log("i = :", i);
-            }
+            // 2. เพิ่มข้อมูลที่ท้ายของ LinkedList
+            linkedList.AddLast("Node 1");
+            linkedList.AddLast("Node 2");
 
-            linkList.AddLast("Node 1");
-            linkList.AddLast("Node 2");
+            // 3. เพิ่มข้อมูลที่ต้นของ LinkedList
+            linkedList.AddFirst("Node 0");
 
-            linkList.AddFirst("Node 0");
-            LCT01_PrintLinkedList(linkList);
+            // 4. แสดงเนื้อหาใน LinkedList
+            LCT01_PrintLinkedList(linkedList);
 
-            LinkedListNode<string> firstNode = linkList.First;
+            // 5. เช้าถึงข้อมูลใน LinkedList
+            LinkedListNode<string> firstNode = linkedList.First;
             Debug.Log("first", firstNode.Value);
-            LinkedListNode<string> lastNode = linkList.Last;
+            LinkedListNode<string> lastNode = linkedList.Last;
             Debug.Log("last", lastNode.Value);
-
-            LinkedListNode<string> node1 = linkList.Find("Node 1"); //หาตัวแรกมาให้เสมอ
+            LinkedListNode<string> node1 = linkedList.Find("Node 1");
             Debug.Log(node1.Previous.Value);
             Debug.Log(node1.Next.Value);
-
-            if(firstNode.Previous == null)
+            if (firstNode.Previous == null)
             {
                 Debug.Log("firstNode.Previous is null");
             }
-            if(lastNode.Next == null)
+            if (lastNode.Next == null)
             {
-                Debug.Log("flrstNode.Next is null");
+                Debug.Log("lastNode.Next is null");
             }
 
-            linkList.AddAfter(node1, "Node 1.5");
-            linkList.AddBefore(node1, "Node 0.5");
-            LCT01_PrintLinkedList(linkList);
+            // 6. add node ก่อน หรือ หลัง node ที่กำหนด
+            linkedList.AddAfter(node1, "Node 1.5");
+            linkedList.AddBefore(node1, "Node 0.5");
+            LCT01_PrintLinkedList(linkedList);
 
-            linkList.RemoveFirst();
-            LCT01_PrintLinkedList(linkList);
+            // 6. ลบ Node แรก
+            linkedList.RemoveFirst();
+            LCT01_PrintLinkedList(linkedList);
 
-            linkList.Remove("Node 2");
-            LCT01_PrintLinkedList(linkList);
+            // 7. ลบ Node ตามค่าที่กำหนด
+            linkedList.Remove("Node 2");
+            LCT01_PrintLinkedList(linkedList);
         }
 
-        private void LCT01_PrintLinkedList(LinkedList<string> linkList)
+        private void LCT01_PrintLinkedList(LinkedList<string> linkedList)
         {
             Debug.Log("LinkedList...");
-            foreach (var node in linkList)
+            foreach(var node in linkedList)
             {
                 Debug.Log(node);
             }
@@ -71,24 +70,25 @@ namespace Assignment03
 
         public void LCT02_SyntaxHashTable()
         {
+            
             Hashtable hashtable = new Hashtable();
+            //Key Value
+            hashtable.Add(1,"Apple");
+            hashtable.Add(2,"Banana");
+            hashtable.Add("bad-fruit","Rotten Tomato");
 
-            hashtable.Add(1, "Apple");
-            hashtable.Add(2, "Banana");
-            hashtable.Add("bad-fruit", "Rotten Tomato");
-
-            string fruit = (string)hashtable[1];
+            string fruit1 = (string)hashtable[1];
             string fruit2 = (string)hashtable[2];
-            string badFruit =  (string)hashtable["bad-fruit"];
+            string badFruit = (string)hashtable["bad-fruit"];
 
-            Debug.Log($"fruit: {fruit}");
-            Debug.Log($"fruit2 : {fruit2}");
-            Debug.Log($"badfruit : {badFruit}");    
+            Debug.Log($"fruit1: {fruit1}");
+            Debug.Log($"fruit2: {fruit2}");
+            Debug.Log($"badFruit: {badFruit}");
 
             LCT02_PrintHashTable(hashtable);
 
             int key = 2;
-            if(hashtable.ContainsKey(key))
+            if (hashtable.ContainsKey(key))
             {
                 Debug.Log($"found {key}");
             }
@@ -101,19 +101,53 @@ namespace Assignment03
             hashtable.Remove(keyToRemove);
             LCT02_PrintHashTable(hashtable);
         }
-
         public void LCT02_PrintHashTable(Hashtable hashtable)
         {
             Debug.Log("table ...");
             foreach(DictionaryEntry entry in hashtable)
             {
-                Debug.Log($"Key : {entry.Key}, Value : {entry.Value}");
+                Debug.Log($"Key: {entry.Key}, Value: {entry.Value}");
             }
         }
 
         public void LCT03_SyntaxDictionary()
         {
-            throw new System.NotImplementedException();
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+
+            dict.Add(1, "Apple");
+            dict.Add(2, "Banana");
+            dict[3] = "Cherry";
+
+            LCT03_PrintDictionary(dict);
+
+            int keyToCheck = 1;
+            bool hasKey = dict.ContainsKey(keyToCheck);
+            Debug.Log ($"has key {keyToCheck}: {hasKey}");
+            if (hasKey)
+            {
+                string value = dict[keyToCheck];
+                Debug.Log($"value of key {keyToCheck} ({value})");
+            }
+
+            Debug.Log($"All key in dict");
+            foreach (int key in dict.Keys)
+            {
+                Debug.Log(key);
+            }
+
+            int keytoremove = 1;
+            dict.Remove(keytoremove);
+            LCT03_PrintDictionary(dict);
+            dict.Clear();
+        }
+
+        private void LCT03_PrintDictionary(Dictionary<int, string> dict)
+        {
+            Debug.Log($"Dictionary has {dict.Count}" );
+            foreach(KeyValuePair<int, string> kvp in dict)
+            {
+                Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value}");
+            }
         }
 
         #endregion

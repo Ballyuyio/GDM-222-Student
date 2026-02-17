@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Solution
 {
@@ -32,11 +33,15 @@ namespace Solution
         [Header("Set object Count")]
         public int obsatcleCount;
         public int itemPotionCount;
+        public int enemyCount = 3;
 
         public Identity[,] mapdata;
+        public List<OOPEnemy> EnemysOnMap = new List<OOPEnemy>();
+
 
         public OOPPlayer playerScript;
         public OOPExit exitScript;
+        public OOPWall wallScript;
         // block types ...
         [HideInInspector]
         public string empty = "";
@@ -82,7 +87,9 @@ namespace Solution
 
             GameObject exit = PlaceObject(Rows-1, Cols-1, Exit.gameObject, null);
             exitScript = exit.GetComponent<OOPExit>();
-
+            
+            GameObject wall = PlaceObject(Rows-1, Cols-1, wallsPrefab[0], null);
+            wallScript = wall.GetComponent<OOPWall>();
             int count = 0;
 
             int preventInfiniteLoop = 100;
@@ -117,13 +124,44 @@ namespace Solution
                 }
             }
 
+            count = 0;
+            preventInfiniteLoop = 100;
+            while (count < enemyCount)
+            {
+                if (--preventInfiniteLoop < 0) break;
+                int x = Random.Range(0, Rows);
+                int y = Random.Range(0, Cols);
+                if (mapdata[x, y] == null)
+                {
+
+                    int r = Random.Range(0, enemyPrefab.Length);
+                    GameObject g = enemyPrefab[r];
+                    count++;
+                    OOPEnemy enemyScript = PlaceObject(x, y, g, EnemyParent).GetComponent<OOPEnemy>();
+                    EnemysOnMap.Add(enemyScript);
+                }
+            }
+
+
+
         }
 
         public Identity GetMapData(float x, float y)
         {
-            if (x >= Rows || x < 0 || y >= Cols || y < 0) return null;
+            
+            if (x >= Rows || x < 0 || y >= Cols || y < 0)
+            {
+                Debug.Log("Cell" + x + y);
+                return wallScript;
+            } 
             return mapdata[(int)x, (int)y];
         }
+
+        public OOPEnemy[] GetEnemies() {
+            return EnemysOnMap.ToArray();
+
+        }
+
 
         public GameObject PlaceObject(int x, int y,GameObject identity,Transform parrent)
         {
@@ -132,24 +170,10 @@ namespace Solution
             obj.transform.parent = parrent;
             Identity _identity = obj.GetComponent<Identity>();
             _identity.mapGenerator = this;
-            _identity.positionX = x;
-            _identity.positionY = y;
             mapdata[x, y] = _identity;
             return obj;
         }
-        public void UpdatePositionIdenity(Identity identity, 
-        int toX,int toY)
-        {
-            mapdata[identity.positionX,identity.positionY] = null;
-            int newX = Mathf.Clamp(toX,0,Rows);
-            int newY = Mathf.Clamp(toY,0,Cols);
 
-            Debug.Log(newX+":"+newY);
-            mapdata[newX,newY] = identity;
-            identity.positionX  =newX;
-            identity.positionY  =newY;
-            identity.transform.position  = new Vector3(newX,newY,0);
-        }
       
     }
 }

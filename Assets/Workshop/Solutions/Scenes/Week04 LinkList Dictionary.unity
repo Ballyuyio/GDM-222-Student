@@ -340,18 +340,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a36e9ee0959e5458abcbc5f1964d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Solution.ZombieParade
-  Name: 
-  positionX: 0
-  positionY: 0
-  mapGenerator: {fileID: 0}
-  energy: 0
-  AttackPoint: 0
-  isAlive: 1
-  SizeParade: 3
-  bodyPrefab: []
-  moveInterval: 0.5
 --- !u!212 &888860281
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -397,6 +388,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300024, guid: fbe1e7b94bb1a4a099d5bcb15a00141c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -406,7 +398,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &888860282
 Transform:
@@ -417,7 +408,7 @@ Transform:
   m_GameObject: {fileID: 888860279}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
